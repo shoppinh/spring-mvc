@@ -1,5 +1,7 @@
+<%@ page import="com.laptrinhjavaweb.util.SecurityUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@include file="/common/taglib.jsp"%>
 <header>
       <div class="container pt-4">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent px-0"><a class="text-white navbar-brand" href="#">Digital Agency</a>
@@ -11,7 +13,15 @@
               <li class="nav-item"><a class="nav-link smooth-scroll" href="#projects">Projects</a></li>
               <li class="nav-item"><a class="nav-link smooth-scroll" href="#gallery">Gallery</a></li>
               <li class="nav-item"><a class="nav-link smooth-scroll" href="#contact">Contact</a></li>
-              <li class="nav-item"><a class="nav-link smooth-scroll" href="#">Login</a></li>
+              <security:authorize access="isAnonymous()">
+              <li class="nav-item"><a class="nav-link smooth-scroll" href="<c:url value="/dang-nhap"/>">Login</a></li>
+              <li class="nav-item"><a class="nav-link smooth-scroll" href="<c:url value="/dang-ki"/>">Register</a></li>
+              </security:authorize>
+              
+               <security:authorize access="isAuthenticated()">
+              <li class="nav-item"><a class="nav-link smooth-scroll" href="#">Welcome, <%=SecurityUtil.getPrincipal().getFullName() %></a></li>
+              <li class="nav-item"><a class="nav-link smooth-scroll" href="<c:url value="/thoat"/>">Exit</a></li>
+              </security:authorize>
               
             </ul>
           </div>

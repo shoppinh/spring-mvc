@@ -1,14 +1,19 @@
 package com.laptrinhjavaweb.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 @Entity
 @Table(name = "nhanvien")
-public class NhanVienEntity {
+public class EmployeeEntity extends BaseEntity{
 	@Id
 	private String maNV;
 	
@@ -29,6 +34,34 @@ public class NhanVienEntity {
 	
 	@Column (name = "MieuTa", columnDefinition = "TEXT")
 	private String mieuTa;
+	
+
+	@ManyToOne
+	@JoinColumn(name = "MaPhongBan")
+	private DepartmentEntity department_id;
+
+	
+	public DepartmentEntity getDepartment_id() {
+		return department_id;
+	}
+
+	public void setDepartment_id(DepartmentEntity department_id) {
+		this.department_id = department_id;
+	}
+
+	@OneToMany(mappedBy = "employee")
+	private List<RelativeEntity> relatives = new ArrayList<>();
+
+	public List<RelativeEntity> getRelatives() {
+		return relatives;
+	}
+	
+	public void setRelatives(List<RelativeEntity> relatives) {
+		this.relatives = relatives;
+	}
+
+
+
 
 	public String getMaNV() {
 		return maNV;

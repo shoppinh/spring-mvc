@@ -236,7 +236,7 @@
       <div class="carousel-inner">
        <div class="carousel-item active">
          <div class="row">
-          <c:forEach var="item" items="${NhanVien}" begin="0" end="2" >
+          <c:forEach var="item" items="${NhanVien.listResult}" begin="0" end="2" >
           	 <div class="col-md-4">
               <div class="card d-block mb-3"><img class="card-img-top" src="<c:url value="/template/web/images/${item.avatar}"/>" alt="image"/>
                 <div class="card-body text-center">
@@ -250,7 +250,7 @@
         </div>
        <div class="carousel-item">
          <div class="row">
-          <c:forEach var="item" items="${NhanVien}" begin="3" end="5" >
+          <c:forEach var="item" items="${NhanVien.listResult}" begin="3" end="5" >
           	 <div class="col-md-4">
               <div class="card d-block mb-3"><img class="card-img-top" src="<c:url value="/template/web/images/${item.avatar}"/>" alt="image"/>
                 <div class="card-body text-center">

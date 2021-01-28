@@ -2,9 +2,9 @@ package com.laptrinhjavaweb.WebService;
 
 import java.util.List;
 
-import com.laptrinhjavaweb.model.NhanVien;
+import com.laptrinhjavaweb.dto.EmployeeDTO;
 
 public interface EmployeeService {
-	public List<NhanVien> getDataSlides();
-
+	 List<EmployeeDTO> findAll();
+	EmployeeDTO findByID(String id);
 }

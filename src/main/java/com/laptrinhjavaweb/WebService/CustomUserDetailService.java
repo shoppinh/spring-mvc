@@ -15,13 +15,13 @@ import com.laptrinhjavaweb.constant.SystemConstant;
 import com.laptrinhjavaweb.dto.MyUser;
 import com.laptrinhjavaweb.entity.RoleEntity;
 import com.laptrinhjavaweb.entity.UserEntity;
-import com.laptrinhjavaweb.repository.TaiKhoanRepository;
+import com.laptrinhjavaweb.repository.UserRepository;
 
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
 	@Autowired
-	private TaiKhoanRepository userRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

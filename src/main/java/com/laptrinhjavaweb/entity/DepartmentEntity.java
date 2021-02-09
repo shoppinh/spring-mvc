@@ -19,7 +19,7 @@ public class DepartmentEntity extends BaseEntity{
 	private String tenPB;
 	
 	
-	@OneToMany(mappedBy = "department_id")
+	@OneToMany(mappedBy = "department")
 	private List<EmployeeEntity> employees = new ArrayList<>();
 
 	public List<EmployeeEntity> getEmployees() {

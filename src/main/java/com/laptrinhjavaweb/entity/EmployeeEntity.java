@@ -38,15 +38,15 @@ public class EmployeeEntity extends BaseEntity{
 
 	@ManyToOne
 	@JoinColumn(name = "MaPhongBan")
-	private DepartmentEntity department_id;
+	private DepartmentEntity department;
 
 	
-	public DepartmentEntity getDepartment_id() {
-		return department_id;
+	public DepartmentEntity getDepartment() {
+		return department;
 	}
 
-	public void setDepartment_id(DepartmentEntity department_id) {
-		this.department_id = department_id;
+	public void setDepartment(DepartmentEntity department) {
+		this.department = department;
 	}
 
 	@OneToMany(mappedBy = "employee")

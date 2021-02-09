@@ -2,6 +2,8 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%@include file="/common/taglib.jsp"%>
+<c:url var="employeeAPI" value="/api/employee" />
+<c:url var="employeeURL" value="/quan-tri/trang-chu" />
 
 <html>
 
@@ -116,7 +118,9 @@
 						</div>
 					</div>
 				</div>
-
+				<c:if test="${not empty message}">
+					<div class="alert alert-${alert}" role="alert">${message}</div>
+				</c:if>
 				<!-- DataTables Example -->
 				<div class="card mb-3">
 					<div class="card-header">
@@ -143,6 +147,7 @@
 												for="selectAll"></label>
 										</span></th>
 										<th>Name</th>
+										<th>Avatar</th>
 										<th>Position</th>
 										<th>ID</th>
 										<th>Age</th>
@@ -156,6 +161,7 @@
 									<tr>
 										<th></th>
 										<th>Name</th>
+										<th>Avatar</th>
 										<th>Position</th>
 										<th>ID</th>
 										<th>Age</th>
@@ -166,13 +172,15 @@
 								</tfoot>
 								<tbody>
 									<c:forEach var="item" items="${NhanVien.listResult}"
-										varStatus="loop">
+										>
 										<tr>
-											<td><span class="custom-checkbox"> <input
-													type="checkbox" id="checkbox${loop.index}" name="options[]"
-													value="1"> <label for="checkbox${loop.index}"></label>
-											</span></td>
+											<td>
+												<span class="custom-checkbox"> 
+													<input type="checkbox" id="checkbox_${item.maNV}" value="${item.maNV}">
+												</span>
+											</td>
 											<td>${item.tenNV}</td>
+											<td>${item.avatar}</td>
 											<td>${item.chucVu}</td>
 											<td>${item.maNV}</td>
 											<td>${item.ngaySinh}</td>
@@ -181,12 +189,10 @@
 											<td><c:url var="updateEmployeeURL"
 													value="/quan-tri/table">
 													<c:param name="id" value="${item.maNV}"></c:param>
-												</c:url> <a href="${updateEmployeeURL}" class="edit"
+												</c:url> 
+												<a href="${updateEmployeeURL}" class="edit"
 												data-toggle="tool-tip"><i class="material-icons"
-													data-toggle="tooltip" title="Edit">&#xE254;</i></a> <a
-												href="#deleteEmployeeModal" class="delete"
-												data-toggle="modal"><i class="material-icons"
-													data-toggle="tooltip" title="Delete">&#xE872;</i></a></td>
+													data-toggle="tooltip" title="Edit">&#xE254;</i></a> 
 										</tr>
 									</c:forEach>
 								</tbody>
@@ -290,13 +296,27 @@
 				}
 			});
 		});
-		//add or update btn
-		$('#btnAddOrUpdate').click(function(e) {
+		$('#btnDelete').click(function (e){
 			e.preventDefault();
-			var data = {};
-			var formData = $('#addForm1').serializeArray();
-			console.log(formData);
+			var ids = $('tbody input[type=checkbox]:checked').map(function (){
+				return $(this).val();
+			}).get();
+			deleteEmployee(ids);
 		});
+		function deleteEmployee(data){
+			$.ajax({
+				url: '${employeeAPI}',
+				type: 'DELETE',
+	            contentType: 'application/json',
+	            data: JSON.stringify(data),
+				success: function (result) {
+	                window.location.href = "${employeeURL}?message=delete_success";
+	            },
+	            error: function (error) {
+	            	window.location.href = "${employeeURL}?message=error_system";
+	            }
+			})
+		}
 	</script>
 </body>
 

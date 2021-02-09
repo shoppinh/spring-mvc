@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="/common/taglib.jsp"%>
-
+<c:url var="employeeURL" value="/quan-tri/trang-chu" />
+<c:url var="employeeAPI" value="/api/employee" />
+<c:url var="editURL" value="/quan-tri/table" />
 <!DOCTYPE html>
 <html lang="en">
 
@@ -59,6 +61,11 @@
 					<li class="breadcrumb-item"><a href="#">Dashboard</a></li>
 					<li class="breadcrumb-item active">Tables</li>
 				</ol>
+				<!-- Notification -->
+				<c:if test="${not empty message}">
+					<div class="alert alert-${alert}" role="alert">${message}</div>
+				</c:if>
+
 				<!-- Edit Modal HTML -->
 				<div class="modal-content">
 					<form:form role="form" id="editForm1" modelAttribute="model">
@@ -79,12 +86,22 @@
 						</c:if>
 						<div class="modal-body">
 							<div class="form-group">
+								<form:select path="maPB" id="maPB">
+									<form:option value="" label="-- Chon Phong Ban"></form:option>
+									<form:options items="${departments}" />
+								</form:select>
+							</div>
+							<div class="form-group">
 								<label>MaNV</label>
-								<form:input path="maNV" cssClass="form-control" />
+								<form:input path="maNV" id="maNV" cssClass="form-control" />
 							</div>
 							<div class="form-group">
 								<label>TenNV</label>
 								<form:input path="tenNV" cssClass="form-control" />
+							</div>
+							<div class="form-group">
+								<label>Avatar</label>
+								<form:input path="avatar" cssClass="form-control" />
 							</div>
 							<div class="form-group">
 								<label>ChucVu</label>
@@ -92,7 +109,7 @@
 							</div>
 							<div class="form-group">
 								<label>MieuTa</label>
-								<form:input path="mieuTa" rows="5" cols="10"
+								<form:textarea path="mieuTa" rows="5" cols="10"
 									cssClass="form-control" />
 							</div>
 							<div class="form-group">
@@ -101,14 +118,17 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel"> 
+							<input type="button" class="btn btn-default" data-dismiss="modal"
+								value="Cancel">
 							<c:if test="${not empty model.maNV}">
-							<input type="button" class="btn btn-info" value="Save" id="btnAddOrUpdate">
+								<button type="button" class="btn btn-info" id="btnAddOrUpdate">
+									Save</button>
+								<input type="hidden" id="custId" name="custId" value="Save">
 
 							</c:if>
 							<c:if test="${empty model.maNV}">
-							<input type="button" class="btn btn-info" value="Add" id="btnAddOrUpdate">
-
+								<button type="button" class="btn btn-info" id="btnAddOrUpdate">
+									Add</button>
 							</c:if>
 						</div>
 					</form:form>
@@ -158,9 +178,54 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		$('#btnAddOrUpdate').click(function(e) {
+			e.preventDefault();
+			var data = {};
+			var formData = $('#editForm1').serializeArray();
+			$.each(formData, function(i, v) {
+				data["" + v.name + ""] = v.value;
+			});
+			var id = $('#custId').val();
+			var employeeID = $('#maNV').val();
+			if (id != "Save") {
+				addEmployee(data);
+			} else {
+				updateEmployee(data);
+			}
 
-	<!-- Add Modal HTML -->
-	<div id="addEmployeeModal" class="modal fade"></div>
+		});
+		function addEmployee(data) {
+			$
+					.ajax({
+						url : '${employeeAPI}',
+						type : 'POST',
+						contentType : 'application/json',
+						data : JSON.stringify(data),
+						dataType : 'json',
+						success : function(result) {
+							window.location.href = "${editURL}?id="+result.maNV+"&message=insert_success";
+						},
+						error : function(error) {
+							window.location.href = "${employeeURL}?message=error_system";
+						}
+					});
+		}
+		function updateEmployee(data) {
+			$.ajax({
+				url : '${employeeAPI}',
+				type : 'PUT',
+				contentType : 'application/json',
+				data : JSON.stringify(data),
+				success : function(result) {
+					window.location.href = "${editURL}?id="+result.maNV+"&message=update_success";
+				},
+				error : function(error) {
+					window.location.href = "${editURL}?id="+result.maNV+"&message=error_system";
+				}
+			});
+		}
+	</script>
 
 
 

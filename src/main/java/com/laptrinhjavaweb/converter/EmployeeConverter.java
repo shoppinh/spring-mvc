@@ -17,10 +17,21 @@ public class EmployeeConverter {
 		result.setChucVu(entity.getChucVu());
 		result.setLuong(entity.getLuong());
 		result.setMieuTa(entity.getMieuTa());
+		result.setMaPB(entity.getDepartment().getMaPB());
 		return result;
 	}
 	public EmployeeEntity toEntity(EmployeeDTO dto) {
 		EmployeeEntity result = new EmployeeEntity();
+		result.setMaNV(dto.getMaNV());
+		result.setTenNV(dto.getTenNV());
+		result.setNgaySinh(dto.getNgaySinh());
+		result.setAvatar(dto.getAvatar());
+		result.setChucVu(dto.getChucVu());
+		result.setLuong(dto.getLuong());
+		result.setMieuTa(dto.getMieuTa());
+		return result;
+	}
+	public EmployeeEntity toEntity(EmployeeDTO dto, EmployeeEntity result) {
 		result.setMaNV(dto.getMaNV());
 		result.setTenNV(dto.getTenNV());
 		result.setNgaySinh(dto.getNgaySinh());
